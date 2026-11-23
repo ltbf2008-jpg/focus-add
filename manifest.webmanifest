@@ -5,7 +5,7 @@
   "display": "standalone",
   "background_color": "#101114",
   "theme_color": "#101114",
-  "description": "Calendario personal de objetivos y progreso.",
+  "description": "Objetivos diarios, calendario y estadísticas personales.",
   "icons": [
     {
       "src": "icon-192.png",
