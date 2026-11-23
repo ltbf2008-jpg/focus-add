@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101114">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FOCUS">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>FOCUS · Personal Progress</title>
+<style>
+:root{color-scheme:dark;--bg:#101114;--panel:#1b1d22;--panel2:#25272d;--line:#35373d;--muted:#9a9ca5;--white:#f4f4f5;--green:#b7e4c7;--green2:#244335;--danger:#d99a85}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--white);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 16px calc(24px + env(safe-area-inset-bottom));}
+main{max-width:850px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;padding:16px 0 20px;border-bottom:1px solid var(--line)}
+.brand{font-size:25px;font-weight:800;letter-spacing:1.5px}.sub,.muted{color:var(--muted);font-size:12px;letter-spacing:.7px}
+h1{font-size:27px;margin:22px 0 5px}h2{font-size:17px;margin:0}.intro{color:var(--muted);margin:0 0 18px}
+.tabs{display:flex;background:var(--panel);padding:4px;border-radius:12px;gap:4px;margin:18px 0}
+.tabs button{flex:1;background:transparent;color:var(--muted);border:0;padding:11px;border-radius:9px;font-weight:600}
+.tabs button.active{background:var(--green);color:#101114}
+.card{background:var(--panel);border:1px solid #292b31;border-radius:17px;padding:16px;margin:12px 0}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.week{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:15px}
+.day{background:var(--panel2);border:0;color:var(--white);border-radius:10px;padding:10px 2px;min-height:68px}
+.day small{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}.day strong{font-size:17px}.day.selected{background:var(--green);color:#101114}.day.selected small{color:#303b34}
+.dot{width:5px;height:5px;border-radius:50%;background:#65d69b;margin:6px auto 0}
+.progress{height:8px;background:var(--line);border-radius:20px;overflow:hidden;margin:10px 0}.progress span{height:100%;display:block;background:var(--green);width:0}
+.task{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #303239}.task:last-child{border:0}.task input[type=checkbox]{width:19px;height:19px;accent-color:#8bcba5}.taskname{flex:1}.task.done .taskname{text-decoration:line-through;color:#777b83}.points{color:var(--green);font-size:13px;white-space:nowrap}
+button,.btn{cursor:pointer}button.primary,.btn{border:0;background:var(--green);color:#101114;border-radius:10px;padding:12px 14px;font-weight:700}
+button.secondary{border:1px solid var(--line);background:var(--panel2);color:var(--white);border-radius:10px;padding:10px 12px}
+button.danger{background:transparent;border:0;color:var(--muted);font-size:18px;padding:4px}
+input,select{background:var(--panel2);border:1px solid var(--line);color:var(--white);border-radius:9px;padding:11px;width:100%;font:inherit}
+label{font-size:12px;color:var(--muted);display:block;margin:10px 0 6px}
+.formgrid{display:grid;grid-template-columns:1fr 110px;gap:10px}.formgrid .full{grid-column:1/-1}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button{flex:1}
+.monthgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:12px}.monthgrid .day{min-height:43px;padding:8px 2px}.monthgrid .day small{display:none}
+.statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{background:var(--panel2);border-radius:12px;padding:14px}.stat b{font-size:25px;display:block;margin-top:5px}
+.hidden{display:none!important}.calendarhead{display:flex;align-items:center;justify-content:space-between;gap:8px}.calendarhead button{min-width:38px}
+.note{font-size:12px;color:var(--muted);line-height:1.5}.empty{color:var(--muted);text-align:center;padding:20px 8px}
+@media(min-width:650px){body{padding-left:28px;padding-right:28px}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.two .card{margin:12px 0}}
+</style>
+</head>
+<body>
+<main>
+<header class="top"><div><div class="brand">FOCUS.</div><div class="sub">PERSONAL PROGRESS</div></div><div class="sub">BUILD YOUR PROGRESS</div></header>
+<h1>Construye tu progreso.</h1><p class="intro">Un día a la vez. Un objetivo a la vez.</p>
+<div class="tabs"><button id="tabWeek" class="active">Semana</button><button id="tabGlobal">Calendario global</button></div>
+<section id="weekView">
+ <div class="card">
+  <div class="row"><h2>Vista semanal</h2><span class="muted" id="weekLabel"></span></div>
+  <div class="week" id="weekDays"></div>
+  <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+  <div class="row"><h2 id="selectedLabel">Tu jornada</h2><span class="muted" id="taskCount">0 tareas</span></div>
+  <div class="row" style="margin-top:12px"><span class="muted">PUNTOS CONSEGUIDOS</span><strong id="earned" style="color:var(--green)">0/100</strong></div>
+  <div class="progress"><span id="progressBar"></span></div>
+  <div class="row muted"><span id="allocated">Asignados: 0</span><span id="available">Disponibles: 100</span></div>
+ </div>
+ <div class="two">
+  <div class="card"><div class="row"><h2>Tareas del día</h2><span class="muted">MARCA AL COMPLETAR</span></div><div id="taskList"></div></div>
+  <div class="card">
+   <h2>Añadir objetivo</h2>
+   <label for="category">Categoría</label><select id="category"></select>
+   <label for="taskPoints">Puntuación (puntos)</label><input id="taskPoints" type="number" min="1" max="100" value="15">
+   <label for="customName">Nombre de tarea (opcional)</label><input id="customName" placeholder="Ej. Repasar vocabulario">
+   <div class="actions" style="margin-top:12px"><button class="primary" id="addTask">Añadir tarea</button></div>
+   <p class="note" id="addMessage">Máximo de 100 puntos asignados por día.</p>
+  </div>
+ </div>
+ <div class="card">
+  <h2>Repetición semanal</h2><p class="note">Crea una tarea que se copie automáticamente en los días elegidos de las semanas futuras. No duplica tareas ya creadas.</p>
+  <label for="repeatCategory">Objetivo</label><select id="repeatCategory"></select>
+  <label for="repeatPoints">Puntos</label><input id="repeatPoints" type="number" min="1" max="100" value="10">
+  <label>Días de repetición</label><div id="repeatDays" class="actions"></div>
+  <label for="repeatUntil">Repetir hasta</label><input id="repeatUntil" type="date">
+  <button class="primary" id="saveRepeat" style="width:100%;margin-top:12px">Guardar repetición</button>
+  <p class="note" id="repeatMessage"></p>
+ </div>
+</section>
+<section id="globalView" class="hidden">
+ <div class="card">
+  <div class="calendarhead"><button class="secondary" id="prevMonth">‹</button><h2 id="monthTitle"></h2><button class="secondary" id="nextMonth">›</button></div>
+  <div class="monthgrid" id="monthGrid"></div>
+  <p class="note">Verde: día con al menos una tarea completada. Pulsa una fecha para abrirla en la vista semanal.</p>
+ </div>
+ <div class="card">
+  <h2>Resumen de progreso</h2><div class="statgrid" style="margin-top:12px">
+   <div class="stat"><span class="muted">PUNTOS TOTALES</span><b id="totalPoints">0</b></div>
+   <div class="stat"><span class="muted">DÍAS ACTIVOS</span><b id="activeDays">0</b></div>
+   <div class="stat"><span class="muted">TAREAS COMPLETADAS</span><b id="totalDone">0</b></div>
+   <div class="stat"><span class="muted">CUMPLIMIENTO</span><b id="completion">0%</b></div>
+  </div>
+ </div>
+</section>
+<footer class="note" style="text-align:center;padding:18px 0">FOCUS · Tus datos se guardan en este dispositivo.</footer>
+</main>
+<script>
+const categories=["Idiomas","Lectura diaria","Gimnasio","Correr","Estudio","Carnet de conducir"];
+const defaults={"Idiomas":15,"Lectura diaria":10,"Gimnasio":20,"Correr":20,"Estudio":25,"Carnet de conducir":15};
+const weekdays=["L","M","X","J","V","S","D"], fullDays=["lunes","martes","miércoles","jueves","viernes","sábado","domingo"];
+const $=id=>document.getElementById(id);
+const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const parse=s=>{let [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
+const today=iso(new Date());
+let selected=today, monthCursor=new Date(new Date().getFullYear(),new Date().getMonth(),1);
+let data=JSON.parse(localStorage.getItem("focusData")||'{"tasks":[],"rules":[]}');
+if(!Array.isArray(data.tasks))data.tasks=[];if(!Array.isArray(data.rules))data.rules=[];
+function save(){localStorage.setItem("focusData",JSON.stringify(data));}
+function startWeek(date){let d=parse(date);d.setDate(d.getDate()-((d.getDay()+6)%7));return d;}
+function tasksFor(date){return data.tasks.filter(t=>t.date===date);}
+function totals(date){let ts=tasksFor(date);return {assigned:ts.reduce((a,t)=>a+t.points,0),earned:ts.filter(t=>t.done).reduce((a,t)=>a+t.points,0)};}
+function seedRules(from,to){
+ let a=parse(from),b=parse(to);
+ for(let d=new Date(a);d<=b;d.setDate(d.getDate()+1)){
+  let dow=(d.getDay()+6)%7, date=iso(d);
+  data.rules.forEach(r=>{if(r.days.includes(dow)&&date>=r.start&&date<=r.until&&!data.tasks.some(t=>t.date===date&&t.ruleId===r.id)){
+   let assigned=totals(date).assigned;if(assigned+r.points<=100)data.tasks.push({id:crypto.randomUUID(),date,name:r.name,points:r.points,done:false,ruleId:r.id});
+  }});
+ }
+ save();
+}
+function renderWeek(){
+ const s=startWeek(selected),days=Array.from({length:7},(_,i)=>{let d=new Date(s);d.setDate(s.getDate()+i);return d;});
+ $("weekLabel").textContent=days[0].toLocaleDateString("es-ES",{day:"numeric",month:"short"})+" – "+days[6].toLocaleDateString("es-ES",{day:"numeric",month:"short"});
+ $("weekDays").innerHTML=days.map((d,i)=>{let k=iso(d),t=tasksFor(k),done=t.some(x=>x.done);return `<button class="day ${k===selected?"selected":""}" data-date="${k}"><small>${weekdays[i]}</small><strong>${d.getDate()}</strong>${done?'<div class="dot"></div>':''}</button>`}).join("");
+ $("weekDays").querySelectorAll("[data-date]").forEach(b=>b.onclick=()=>{selected=b.dataset.date;render();});
+ let d=parse(selected),ts=tasksFor(selected),v=totals(selected);
+ $("selectedLabel").textContent=d.toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"long"});
+ $("taskCount").textContent=ts.filter(t=>t.done).length+"/"+ts.length+" completadas";
+ $("earned").textContent=v.earned+"/100";$("progressBar").style.width=v.earned+"%";
+ $("allocated").textContent="Asignados: "+v.assigned;$("available").textContent="Disponibles: "+(100-v.assigned);
+ $("taskList").innerHTML=ts.length?ts.map(t=>`<div class="task ${t.done?"done":""}"><input type="checkbox" data-id="${t.id}" ${t.done?"checked":""}><span class="taskname">${escapeHtml(t.name)}</span><span class="points">${t.points} pts</span><button class="danger" data-delete="${t.id}" aria-label="Eliminar">×</button></div>`).join(""):'<div class="empty">Todavía no tienes tareas.<br>Añade tus objetivos para empezar.</div>';
+ $("taskList").querySelectorAll("[data-id]").forEach(c=>c.onchange=()=>{let t=data.tasks.find(x=>x.id===c.dataset.id);t.done=c.checked;save();render();});
+ $("taskList").querySelectorAll("[data-delete]").forEach(b=>b.onclick=()=>{data.tasks=data.tasks.filter(t=>t.id!==b.dataset.delete);save();render();});
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function renderGlobal(){
+ let y=monthCursor.getFullYear(),m=monthCursor.getMonth();$("monthTitle").textContent=monthCursor.toLocaleDateString("es-ES",{month:"long",year:"numeric"});
+ let first=new Date(y,m,1),offset=(first.getDay()+6)%7,count=new Date(y,m+1,0).getDate(),cells=Array(offset).fill('<div></div>');
+ for(let n=1;n<=count;n++){let k=iso(new Date(y,m,n)),done=tasksFor(k).some(t=>t.done);cells.push(`<button class="day ${k===selected?"selected":""}" data-date="${k}" style="${done&&k!==selected?"background:#244335;color:#b7e4c7":""}">${n}</button>`);}
+ $("monthGrid").innerHTML=weekdays.map(x=>`<div class="muted" style="text-align:center;font-size:11px">${x}</div>`).join("")+cells.join("");
+ $("monthGrid").querySelectorAll("[data-date]").forEach(b=>b.onclick=()=>{selected=b.dataset.date;showView("week");render();});
+ let done=data.tasks.filter(t=>t.done),active=new Set(done.map(t=>t.date)),assigned=data.tasks.length;
+ $("totalPoints").textContent=done.reduce((s,t)=>s+t.points,0);$("activeDays").textContent=active.size;$("totalDone").textContent=done.length;$("completion").textContent=(assigned?Math.round(done.length/assigned*100):0)+"%";
+}
+function render(){seedRules(selected,selected);renderWeek();renderGlobal();}
+function showView(v){$("weekView").classList.toggle("hidden",v!=="week");$("globalView").classList.toggle("hidden",v!=="global");$("tabWeek").classList.toggle("active",v==="week");$("tabGlobal").classList.toggle("active",v==="global");}
+function addTask(name,points){let used=totals(selected).assigned;if(!name||!Number.isInteger(points)||points<1||points>100||used+points>100){$("addMessage").textContent="Revisa la tarea: el máximo diario es 100 puntos.";return;}data.tasks.push({id:crypto.randomUUID(),date:selected,name,points,done:false});save();$("customName").value="";$("addMessage").textContent="Tarea añadida.";render();}
+categories.forEach(c=>{let o=document.createElement("option");o.value=c;o.textContent=c;$("category").append(o);let r=o.cloneNode(true);$("repeatCategory").append(r);});
+$("category").onchange=()=>{$("taskPoints").value=defaults[$("category").value];};
+$("addTask").onclick=()=>{let cat=$("category").value;addTask($("customName").value.trim()||cat,Number($("taskPoints").value));};
+$("tabWeek").onclick=()=>showView("week");$("tabGlobal").onclick=()=>showView("global");
+$("prevMonth").onclick=()=>{monthCursor.setMonth(monthCursor.getMonth()-1);renderGlobal();};$("nextMonth").onclick=()=>{monthCursor.setMonth(monthCursor.getMonth()+1);renderGlobal();};
+$("repeatCategory").onchange=()=>{$("repeatPoints").value=defaults[$("repeatCategory").value];};
+$("repeatDays").innerHTML=weekdays.map((d,i)=>`<label style="display:flex;align-items:center;gap:5px;margin:0;color:var(--white)"><input type="checkbox" value="${i}" style="width:auto;accent-color:#b7e4c7"> ${d}</label>`).join("");
+$("repeatUntil").value=iso(new Date(Date.now()+90*86400000));
+$("saveRepeat").onclick=()=>{
+ let days=[...$("repeatDays").querySelectorAll("input:checked")].map(x=>Number(x.value)),points=Number($("repeatPoints").value),cat=$("repeatCategory").value,until=$("repeatUntil").value;
+ if(!days.length||!until||until<selected||points<1||points>100){$("repeatMessage").textContent="Elige al menos un día, una puntuación válida y una fecha final.";return;}
+ data.rules.push({id:crypto.randomUUID(),name:cat,points,days,start:selected,until});seedRules(selected,until);$("repeatMessage").textContent="Repetición guardada y aplicada a las fechas disponibles.";render();
+};
+if("serviceWorker" in navigator && location.protocol!=="file:"){navigator.serviceWorker.register("./sw.js").catch(()=>{});}
+render();
+</script>
+</body></html>
