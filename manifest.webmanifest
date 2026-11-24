@@ -1,11 +1,11 @@
 {
-  "name": "FOCUS 4.0 · Personal Progress & Sports",
-  "short_name": "FOCUS 4.0",
+  "name": "FOCUS · Personal Progress & Sports",
+  "short_name": "FOCUS",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#101114",
   "theme_color": "#101114",
-  "description": "Objetivos personales y planificación deportiva: atletismo, natación, gimnasio y ciclismo, con sesiones, evidencias y seguimiento.",
+  "description": "Objetivos personales, calendario deportivo, evolución e insignias por disciplina.",
   "icons": [
     {
       "src": "icon-192.png",

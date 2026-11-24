@@ -60,6 +60,36 @@ textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px
 /* Distinct visual accents for each FOCUS workspace */
 #screen-home h1{color:#d8f3e3}#screen-weekly h1{color:#b9d8ff}#screen-annual h1{color:#d7c5ff}#screen-monthly h1{color:#ffd3a8}#screen-weekstats h1{color:#aee5df}#screen-goals h1{color:#f0c5d2}#screen-schedule h1{color:#c7d8ef}
 #screen-home>.card:first-of-type{background:linear-gradient(135deg,#1d3027,#1b1d22)}#screen-weekly>.card{background:linear-gradient(145deg,#1c2938,#1b1d22)}#screen-annual>.card{background:linear-gradient(145deg,#28223b,#1b1d22)}#screen-monthly>.card{background:linear-gradient(145deg,#382b22,#1b1d22)}#screen-weekstats>.card{background:linear-gradient(145deg,#1d3333,#1b1d22)}#screen-goals>.card:first-of-type{background:linear-gradient(145deg,#35242d,#1b1d22)}#screen-schedule>.card:first-of-type{background:linear-gradient(145deg,#202d3b,#1b1d22)}
+
+/* FOCUS 4.1 · layout refinement and restrained visual depth */
+*,*::before,*::after{box-sizing:border-box}
+#screen-sport,#sport-dashboard,#sport-detail,#sport-complete{width:100%;max-width:100%;min-width:0;overflow-x:clip}
+#screen-sport .card,#screen-sport .sport-session,#screen-sport .sport-hero{min-width:0;max-width:100%}
+#screen-sport .sport-formgrid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+#screen-sport .sport-formgrid>div{min-width:0}
+#screen-sport input,#screen-sport select,#screen-sport textarea{width:100%;max-width:100%;min-width:0}
+#screen-sport .sport-session-top{flex-wrap:wrap}
+#screen-sport .sport-session-top>div{min-width:0;flex:1 1 180px;overflow-wrap:anywhere}
+#screen-sport .sport-session .session-actions button{min-width:0;white-space:normal}
+#screen-sport .sport-tabs{max-width:100%;overscroll-behavior-x:contain}
+#screen-sport .sport-hero{box-shadow:0 14px 30px #0005,inset 0 1px #ffffff12}
+#screen-sport .sport-tile,#screen-sport .sport-stat,#screen-sport .sport-session{box-shadow:0 8px 20px #0003,inset 0 1px #ffffff0b}
+#screen-sport .sport-tile{min-width:0;min-height:154px}
+#screen-sport .sport-tile:before{content:'';position:absolute;width:90px;height:90px;border:1px solid #ffffff12;border-radius:50%;right:-28px;bottom:-34px;pointer-events:none}
+#screen-sport .sport-tile:after{content:'';position:absolute;width:48px;height:48px;border:1px solid #ffffff0d;border-radius:50%;right:-8px;bottom:-12px;pointer-events:none}
+#screen-sport .sport-kicker{display:flex;align-items:center;gap:8px}
+#screen-sport .sport-kicker:before{content:'';display:inline-block;width:18px;height:2px;background:currentColor;border-radius:2px}
+.sport-badges{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}
+.sport-badge{border:1px solid #454b55;border-radius:15px;padding:12px;background:linear-gradient(145deg,#292e36,#1c2026);min-width:0;position:relative;overflow:hidden}
+.sport-badge.earned{border-color:#8aa995;background:linear-gradient(145deg,#293c34,#202a27)}
+.sport-badge .medal{font-size:23px;display:block;margin-bottom:7px;filter:grayscale(1);opacity:.45}
+.sport-badge.earned .medal{filter:none;opacity:1}
+.sport-badge b{font-size:12px;display:block;line-height:1.35}
+.sport-badge small{font-size:10px;color:var(--muted);display:block;margin-top:5px;line-height:1.4}
+.sport-badge .earned-tag{font-size:9px;letter-spacing:.7px;color:#b9dfc8;text-transform:uppercase;margin-top:8px;display:block}
+@media(max-width:390px){#screen-sport .sport-formgrid{grid-template-columns:minmax(0,1fr)}#screen-sport .sport-formgrid .wide{grid-column:auto}.sport-badges{grid-template-columns:minmax(0,1fr)}}
+@media(min-width:700px){#screen-sport .sport-formgrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
 </style></head><body><main>
 <header class="top"><div><div class="brand">FOCUS.</div><div class="sub">PERSONAL PROGRESS</div></div><div class="topright" style="display:flex;gap:7px;align-items:center"><button class="ghost" id="openCalendar" aria-label="Calendario">▦</button><button class="ghost" id="openSettings" aria-label="Ajustes">⚙</button></div></header>
 <section id="screen-home"><h1>Hoy, a por ello.</h1><p class="intro" id="todayLabel">Tu progreso empieza con una acción.</p>
@@ -101,7 +131,7 @@ textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px
    <div class="card"><div class="row"><h2>Sesiones de esta disciplina</h2><span class="pill" id="spSessionCount">0 sesiones</span></div><div id="spSessionList"></div></div>
   </div>
   <div id="sport-panel-week" class="hidden"><div class="card"><div class="row"><h2>Tu semana deportiva</h2><span class="pill" id="spWeekLabel"></span></div><div class="week" id="spWeekDays"></div><div id="spWeekList"></div></div></div>
-  <div id="sport-panel-history" class="hidden"><div class="statgrid"><div class="sport-stat"><small>COMPLETADAS</small><strong id="spHistoryCount">0</strong></div><div class="sport-stat"><small>SATISFACCIÓN MEDIA</small><strong id="spAverageFeel">—</strong></div></div><div class="card"><h2>Tu evolución</h2><div id="spEvolution"></div></div><div class="card"><h2>Comparativa con sesiones anteriores</h2><div id="spComparison"></div></div></div>
+  <div id="sport-panel-history" class="hidden"><div class="statgrid"><div class="sport-stat"><small>COMPLETADAS</small><strong id="spHistoryCount">0</strong></div><div class="sport-stat"><small>SATISFACCIÓN MEDIA</small><strong id="spAverageFeel">—</strong></div></div><div class="card"><h2>Tu evolución</h2><div id="spEvolution"></div></div><div class="card"><h2>Comparativa con sesiones anteriores</h2><div id="spComparison"></div></div><div class="card"><div class="row"><h2>Insignias deportivas</h2><span class="pill">Constancia · Rendimiento</span></div><p class="note">Se desbloquean con tus sesiones registradas. Cada disciplina tiene sus propios logros.</p><div id="spBadges" class="sport-badges"></div></div></div>
  </div>
  <div id="sport-complete" class="hidden">
   <button class="ghost sport-back" id="sportCompleteBack">← Volver a la disciplina</button>
@@ -259,8 +289,8 @@ $('exportICS').onclick=exportICS;if('serviceWorker'in navigator&&location.protoc
   $('sportRecent').innerHTML=recent.length?recent.map(x=>`<div class="task"><span class="taskname"><b>${sports[x.sport].icon} ${esc2(x.name)}</b><div class="taskmeta">${x.sport} · ${fmtDate(x.date)} · satisfacción ${x.satisfaction||'—'}/5</div></span><span class="points">✓</span></div>`).join(''):'<div class="sport-empty">Cuando completes tus primeras sesiones, aquí aparecerán tus sensaciones y resultados.</div>';
  }
  function sessionCard(x){let metric=[x.duration?x.duration+' min':'',x.distance?x.distance+' km':'',x.resultTime||''].filter(Boolean).join(' · ');let media=x.media?(x.media.type?.startsWith('video/')?`<video class="sport-proof-video" controls src="${x.media.data}"></video>`:`<img class="sport-proof" src="${x.media.data}" alt="Evidencia de entrenamiento">`):'';return `<div class="sport-session"><div class="sport-session-top"><div><h3>${sports[x.sport]?.icon||'🏅'} ${esc2(x.name)}</h3><p>${esc2(x.sport)} · ${fmtDate(x.date)} · ${esc2(x.time||'')}</p></div><span class="pill">${x.status==='done'?'Completada':'Programada'}</span></div>${metric?`<div class="sport-metric">${esc2(metric)}</div>`:''}${x.status==='planned'?`<div class="session-actions"><button class="primary" data-complete-session="${x.id}">Completar sesión</button><button class="ghost" data-delete-session="${x.id}">Eliminar</button></div>`:`<p>${x.satisfaction?`Sensaciones: ${x.satisfaction}/5`:''} ${x.autoPoints?`· +${x.autoPoints} puntos FOCUS`:''}</p>${media}<div class="session-actions"><button class="secondary" data-share-session="${x.id}">Compartir sesión</button></div>`}</div>`}
- function openSport(sport){currentSport=sport;$('sport-dashboard').classList.add('hidden');$('sport-detail').classList.remove('hidden');$('sport-complete').classList.add('hidden');$('sportDetailTitle').textContent=sports[sport].icon+' '+sport;$('sportDetailIntro').textContent=sports[sport].intro;$('sportDetailHero').style.background=`linear-gradient(135deg,${sports[sport].color}40,#17202b 75%)`;$('spDate').value=new Date().toLocaleDateString('en-CA');$('spName').value='';$('spPlanNotes').value='';$('spPlanMsg').textContent='';switchTab('plan');renderSportSessions()}
- function switchTab(tab){currentTab=tab;document.querySelectorAll('[data-sport-tab]').forEach(b=>b.classList.toggle('active',b.dataset.sportTab===tab));['plan','week','history'].forEach(x=>$('sport-panel-'+x).classList.toggle('hidden',x!==tab));if(tab==='week')renderSportWeek();if(tab==='history')renderSportHistory();}
+ function openSport(sport){currentSport=sport;$('sport-dashboard').classList.add('hidden');$('sport-detail').classList.remove('hidden');$('sport-complete').classList.add('hidden');$('sportDetailTitle').textContent=sports[sport].icon+' '+sport;$('sportDetailIntro').textContent=sports[sport].intro;$('sportDetailHero').style.background=`linear-gradient(135deg,${sports[sport].color}40,#17202b 75%)`;$('spDate').value=new Date().toLocaleDateString('en-CA');$('spName').value='';$('spPlanNotes').value='';$('spPlanMsg').textContent='';const typeOptions={Atletismo:['Rodaje suave','Series / intervalos','Tempo / umbral','Técnica de carrera','Recuperación'],Natación:['Técnica de nado','Resistencia continua','Series en piscina','Aguas abiertas','Recuperación'],Gimnasio:['Fuerza máxima','Hipertrofia','Tren superior','Tren inferior','Full body','Movilidad'],Ciclismo:['Rodaje de fondo','Series / intervalos','Subidas','Recuperación','Salida técnica']};$('spType').innerHTML=typeOptions[sport].map(t=>`<option>${t}</option>`).join('');$('spDistance').placeholder=sport==='Natación'?'Metros (km equivalentes)':'Kilómetros';$('spGoal').placeholder=({Atletismo:'Ej. ritmo objetivo o distancia',Natación:'Ej. técnica o metros objetivo',Gimnasio:'Ej. grupo muscular o carga objetivo',Ciclismo:'Ej. ruta, desnivel o potencia'})[sport];switchTab('plan');renderSportSessions()}
+ function switchTab(tab){currentTab=tab;document.querySelectorAll('[data-sport-tab]').forEach(b=>b.classList.toggle('active',b.dataset.sportTab===tab));['plan','week','history'].forEach(x=>$('sport-panel-'+x).classList.toggle('hidden',x!==tab));if(tab==='week')renderSportWeek();if(tab==='history'){renderSportHistory();renderSportBadges();}}
  function renderSportSessions(){let arr=all();$('spSessionCount').textContent=arr.length+' sesiones';$('spSessionList').innerHTML=arr.length?arr.map(sessionCard).join(''):'<div class="sport-empty">Todavía no has creado sesiones de '+currentSport.toLowerCase()+'.</div>';}
  function planSession(){let name=$('spName').value.trim()||currentSport+' · '+$('spType').value,date=$('spDate').value,time=$('spStart').value;if(!date){$('spPlanMsg').textContent='Selecciona una fecha.';return}let obj={id:crypto.randomUUID(),sport:currentSport,name,date,time,type:$('spType').value,duration:Number($('spDuration').value)||null,distance:Number($('spDistance').value)||null,goal:$('spGoal').value.trim(),notes:$('spPlanNotes').value.trim(),status:'planned',createdAt:new Date().toISOString()};data.sportSessions.push(obj);if(!saveSports())return;$('spPlanMsg').textContent='Sesión añadida a tu calendario deportivo.';$('spName').value='';$('spDuration').value='';$('spDistance').value='';$('spGoal').value='';$('spPlanNotes').value='';renderSportSessions();showSportCounters();}
  function showSportCounters(){ $('sportTotalCount').textContent=data.sportSessions.length+' sesiones';$('sportCompleted').textContent=data.sportSessions.filter(x=>x.status==='done').length;$('sportPlanned').textContent=data.sportSessions.filter(x=>x.status==='planned').length; }
@@ -275,6 +305,23 @@ $('exportICS').onclick=exportICS;if('serviceWorker'in navigator&&location.protoc
  }
  function renderSportWeek(){let st=startWeekLocal(new Date()),arr=Array.from({length:7},(_,i)=>{let d=new Date(st);d.setDate(st.getDate()+i);return d});$('spWeekLabel').textContent=arr[0].toLocaleDateString('es-ES',{day:'numeric',month:'short'})+' – '+arr[6].toLocaleDateString('es-ES',{day:'numeric',month:'short'});$('spWeekDays').innerHTML=arr.map(d=>{let k=localISO(d),n=all().filter(x=>x.date===k).length;return `<div class="day"><small>${['D','L','M','X','J','V','S'][d.getDay()]}</small><strong>${d.getDate()}</strong>${n?`<div class="dot"></div>`:''}</div>`}).join('');let sessions=all().filter(x=>{let k=x.date;return k>=localISO(arr[0])&&k<=localISO(arr[6])});$('spWeekList').innerHTML=sessions.length?sessions.map(sessionCard).join(''):'<div class="sport-empty">No hay sesiones de '+esc2(currentSport.toLowerCase())+' esta semana.</div>';}
  function startWeekLocal(d){let x=new Date(d);x.setHours(12,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x}function localISO(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+ function renderSportBadges(){
+  const done=all().filter(x=>x.status==='done');
+  const dates=[...new Set(done.map(x=>x.date))].sort();
+  const weeks=new Set(dates.map(d=>{let x=new Date(d+'T12:00:00');x.setDate(x.getDate()-((x.getDay()+6)%7));return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')}));
+  const bestDistance=done.reduce((m,x)=>Math.max(m,Number(x.distance)||0),0);
+  const bestTime=done.map(x=>x.resultSeconds).filter(x=>Number.isFinite(x)&&x>0).sort((a,b)=>a-b)[0];
+  const weeklyCounts={};done.forEach(x=>{let d=new Date(x.date+'T12:00:00');d.setDate(d.getDate()-((d.getDay()+6)%7));let k=d.toISOString().slice(0,10);weeklyCounts[k]=(weeklyCounts[k]||0)+1});
+  const badges=[
+   ['🌱','Primera sesión','Completa tu primer entrenamiento',done.length>=1,'Constancia'],
+   ['🔥','En marcha','Completa 5 sesiones de esta disciplina',done.length>=5,'Constancia'],
+   ['🧭','Compromiso','Completa 10 sesiones de esta disciplina',done.length>=10,'Constancia'],
+   ['📅','Semana activa','Registra 3 sesiones en una misma semana',Object.values(weeklyCounts).some(n=>n>=3),'Constancia'],
+   ['📈','Marca personal','Registra una distancia o marca de tiempo para empezar a medir tu rendimiento',bestDistance>0||bestTime!==undefined,'Rendimiento'],
+   ['🏅','Seguimiento de marcas','Registra al menos dos sesiones con distancia o tiempo para comparar tu evolución',done.filter(x=>Number(x.distance)>0||Number.isFinite(x.resultSeconds)).length>=2,'Rendimiento']
+  ];
+  $('spBadges').innerHTML=badges.map(b=>`<div class="sport-badge ${b[3]?'earned':''}"><span class="medal">${b[0]}</span><b>${b[1]}</b><small>${b[2]}</small><span class="earned-tag">${b[3]?'Insignia desbloqueada':b[4]+' · Por conseguir'}</span></div>`).join('');
+ }
  function renderSportHistory(){let arr=all().filter(x=>x.status==='done'),avg=arr.length?(arr.reduce((a,x)=>a+Number(x.satisfaction||0),0)/arr.length).toFixed(1):'—';$('spHistoryCount').textContent=arr.length;$('spAverageFeel').textContent=avg==='—'?'—':avg+'/5';$('spEvolution').innerHTML=arr.length?arr.slice(0,8).map(x=>`<div class="task"><span class="taskname"><b>${fmtDate(x.date)} · ${esc2(x.name)}</b><div class="taskmeta">${x.duration||'—'} min · ${x.distance||'—'} km · satisfacción ${x.satisfaction}/5</div></span><span class="points">${x.autoPoints||0} pts</span></div>`).join(''):'<div class="sport-empty">Completa varias sesiones para empezar a ver tu evolución.</div>';
   let comps=arr.slice(0,5);$('spComparison').innerHTML=comps.length?comps.map((x,i)=>{let prev=arr.slice(i+1).find(y=>y.type===x.type)||arr[i+1];let delta=prev&&x.duration&&prev.duration?`${x.duration-prev.duration>0?'+':''}${x.duration-prev.duration} min frente a la sesión anterior`:'';return `<div class="sport-compare"><b>${fmtDate(x.date)} · ${esc2(x.name)}</b><br>${x.distance||'—'} km · ${x.duration||'—'} min · satisfacción ${x.satisfaction}/5${prev?`<br><span style="color:var(--sport)">Comparada con ${fmtDate(prev.date)}: ${delta||'se ha registrado una nueva referencia'}</span>`:''}</div>`}).join(''):'<div class="sport-empty">Aún no hay comparativas. Las sesiones completadas se compararán con las anteriores de esta disciplina.</div>';
  }
